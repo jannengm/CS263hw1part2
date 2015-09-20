@@ -19,6 +19,7 @@ private:
     vector<vector<char>> the_grid;
     vector<string> the_words;
     pair<int, int> min_max;
+    vector<string> solution;
 
     /* You may add as many private variables and functions here */
 
@@ -30,24 +31,23 @@ private:
 
     /*
      * Solves the puzzle using the triple algorithm. Searches each ordered triple
-     * (row, column, direction) for the preseence of the word being searched for,
-     * then moves on to the next word and repeats. Returns a vector of strings
-     * containing the solution.
+     * (row, column, direction) for the presence of the word being searched for,
+     * then moves on to the next word and repeats. Stores the solution in
+     * vector<string> solution
      */
-    vector<string> triple() const;
+    void triple();
 
     /*
      * Solves the puzzle using the quadruple algorithm. Checks if each ordered
      * quadruple (row, column, direction, number of characters) is in the word list.
-     * Returns a vector of strings containing the solution.
+     * Stores the solution in vector<string> solution
      */
-    vector<string> quadruple() const;
+    void quadruple();
 
     /*
-     * Checks if a given string is in the word list. Returns true if found,
-     * else false.
+     * Checks if a given string is in the word list. Returns the position if found, else -1
      */
-    bool checkList(string&) const;
+    int checkList(string&) const;
 };
 
 
