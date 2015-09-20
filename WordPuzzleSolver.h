@@ -48,6 +48,26 @@ private:
      * else false.
      */
     bool checkList(string&) const;
+    
+    /*
+     * From a starting position in the grid given by row and col, the function checks 
+     * if the characters that follow horizontally make up the given word. If they do,
+     * the function returns true, else false.
+     */ 
+    bool foundH (const string& word, int row, int col);
+    
+    /*
+     * From a starting position in the grid given by row and col, the function checks 
+     * if the characters that follow vertically make up the given word. If they do,
+     * the function returns true, else false.
+     */ 
+    bool foundV (const string& word, int row, int col);
+    
+    /*
+     * Goes through the entire grid until it finds the given word, using the foundH
+     * and foundV functions.
+     */ 
+    void find (const string& word);
 };
 
 
