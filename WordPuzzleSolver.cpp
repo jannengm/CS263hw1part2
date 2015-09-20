@@ -8,7 +8,7 @@ WordPuzzleSolver::WordPuzzleSolver() {
 
 void WordPuzzleSolver::load (ifstream& input) {
     int height, width, num_words;
-    input >> height >> width;
+    input >> width >> height;
 
     the_grid.resize (height, vector<char>(width));
 
@@ -47,21 +47,19 @@ void WordPuzzleSolver::solve(const string& which) {
         clog << me << endl;
     }
 
-    clog << "Shortest word: " << min_max.first << endl;
-    clog << "Longest word: " << min_max.second << endl;
-
-    clog << "First row is: " << getRow(0) << endl;
-    clog << "First column is: " << getColumn(0) << endl;
-
 #endif*/
 
     /* Java string "operator==" will be used here */
     if (which == "triple") {
-        triple();
+        vector<string> solution = triple();
+        for (auto &line : solution)
+            cout << line << endl;
     }
     else {
         /* refer to third paragraph of page 2 in textbook */
-        quadruple();
+        vector<string> solution = quadruple();
+        for (auto &line : solution)
+            cout << line << endl;
     }
 }
 
@@ -77,115 +75,80 @@ void WordPuzzleSolver::getWordLengths() {
     }
 }
 
-void WordPuzzleSolver::triple() const {
+vector<string> WordPuzzleSolver::triple() const {
     string str;
     int length;
+    bool found;
+    vector<string> solution;
+    const int ROWS = the_grid.size();
+    const int COLS = the_grid[0].size();
 
     for(auto &word: the_words) {
         length = word.length();
-        for (int row = 0; row < the_grid.size(); row++) {
-            for(int col = 0; col < the_grid[0].size(); col++){
+        found = false;
+        for (int row = 0; row < ROWS && !found; row++) {
+            for(int col = 0; col < COLS && !found; col++){
                 str = "";
-                for (int i = 0; i < length &&
-                        col + i < the_grid[0].size(); i++) {
+                for (int i = 0; i < length && col + i < COLS; i++) {
                     str += the_grid[row][col + i];
                 }
 
                 if (str == word){
-                    cout << word << " " << row << " " << col
-                    << " ACROSS" << endl;
+                    found = true;
+                    solution.push_back(word + " " + to_string(row) + " " + to_string(col) + " ACROSS" );
                     break;
                 }
 
                 str = "";
-                for (int i = 0; i < length &&
-                                row + i < the_grid.size(); i++) {
+                for (int i = 0; i < length && row + i < ROWS; i++) {
                     str += the_grid[row + i][col];
                 }
 
                 if (str == word){
-                    cout << word << " " << row << " " << col
-                    << " DOWN" << endl;
+                    found = true;
+                    solution.push_back(word + " " + to_string(row) + " " + to_string(col) + " DOWN" );
                     break;
                 }
             }
         }
-
     }
+
+    return solution;
 }
 
-/*void WordPuzzleSolver::triple() const {
-    int pos;
-
-    for (auto &word : the_words) {
-        for (int row = 0; row < the_grid.size(); row++) {
-            string line = getRow(row);
-            if ((pos = line.find(word)) != string::npos) {
-                cout << word << " " << row << " " << pos << " ACROSS" << endl;
-                break;
-            }
-        }
-
-        for (int col = 0; col < the_grid[0].size(); col++) {
-            string line = getColumn(col);
-            if ((pos = line.find(word)) != string::npos) {
-                cout << word << " " << pos << " " << col << " DOWN" << endl;
-                break;
-            }
-        }
-    }
-}*/
-
-string WordPuzzleSolver::getRow(int row) const {
-    string result = "";
-    for(int col = 0; col < the_grid[0].size(); col++) {
-        result += the_grid[row][col];
-    }
-
-    return result;
-}
-
-string WordPuzzleSolver::getColumn(int col) const {
-    string result = "";
-    for(int row = 0; row < the_grid[0].size(); row++) {
-        result += the_grid[row][col];
-    }
-
-    return result;
-}
-
-void WordPuzzleSolver::quadruple() const {
+vector<string> WordPuzzleSolver::quadruple() const {
     string str;
     int length = min_max.second;
-    for (int row = 0; row < the_grid.size(); row++) {
-        for (int col = 0; col < the_grid[0].size(); col++) {
+    vector<string> solution;
+    const int ROWS = the_grid.size();
+    const int COLS = the_grid[0].size();
+
+    for (int row = 0; row < ROWS; row++) {
+        for (int col = 0; col < COLS; col++) {
             str = "";
-            for (int i = 0; i < length &&
-                            col + i < the_grid[0].size(); i++) {
+            for (int i = 0; i < length && col + i < COLS; i++) {
                 str += the_grid[row][col + i];
-                if (i >= min_max.first) {
+                if (i >= min_max.first) {   /*Don't check the word_list if the string is too short*/
                     if (checkList(str)) {
-                        cout << str << " " << row << " " << col
-                        << " ACROSS" << endl;
+                        solution.push_back(str + " " + to_string(row) + " " + to_string(col) + " ACROSS" );
                         break;
                     }
                 }
             }
 
             str = "";
-            for (int i = 0; i < length &&
-                            row + i < the_grid.size(); i++) {
+            for (int i = 0; i < length && row + i < ROWS; i++) {
                 str += the_grid[row + i][col];
                 if (i >= min_max.first) {
                     if (checkList(str)) {
-                        cout << str << " " << row << " " << col
-                        << " DOWN" << endl;
+                        solution.push_back(str + " " + to_string(row) + " " + to_string(col) + " DOWN" );
                         break;
                     }
                 }
             }
         }
     }
+    return solution;
 }
 
 bool WordPuzzleSolver::checkList(string& str) const {

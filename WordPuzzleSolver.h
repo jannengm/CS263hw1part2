@@ -27,10 +27,26 @@ private:
      * as pair<minimum length, maximum length>
      */
     void getWordLengths();
-    void triple() const;
-    void quadruple() const;
-    string getRow(int) const;
-    string getColumn(int) const;
+
+    /*
+     * Solves the puzzle using the triple algorithm. Searches each ordered triple
+     * (row, column, direction) for the preseence of the word being searched for,
+     * then moves on to the next word and repeats. Returns a vector of strings
+     * containing the solution.
+     */
+    vector<string> triple() const;
+
+    /*
+     * Solves the puzzle using the quadruple algorithm. Checks if each ordered
+     * quadruple (row, column, direction, number of characters) is in the word list.
+     * Returns a vector of strings containing the solution.
+     */
+    vector<string> quadruple() const;
+
+    /*
+     * Checks if a given string is in the word list. Returns true if found,
+     * else false.
+     */
     bool checkList(string&) const;
 };
 
