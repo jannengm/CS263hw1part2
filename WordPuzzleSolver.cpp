@@ -51,10 +51,13 @@ void WordPuzzleSolver::solve(const string& which) {
 
     /* Java string "operator==" will be used here */
     if (which == "triple") {
-        vector<string> solution = triple();
-        for (auto &line : solution)
-            cout << line << endl;
-    }
+        // vector<string> solution = triple();
+        // for (auto &line : solution)
+        //     cout << line << endl;
+        for (auto it = the_words.begin(); it != the_words.end(); ++it) { 
+            find(*it);                              //prints word out as it is found                    
+        }                                           //is probably better than storing the words first                    
+    }                                               //as it saves a bit of memory?
     else {
         /* refer to third paragraph of page 2 in textbook */
         vector<string> solution = quadruple();
@@ -158,3 +161,42 @@ bool WordPuzzleSolver::checkList(string& str) const {
     }
     return false;
 }
+
+bool WordPuzzleSolver::foundH(const string& word, int row, int col) {
+    //Checks if there is enough space for the word from starting position
+    int c = col;
+    if (the_grid[row].size() - word.length() >= col) {
+        for (const char &it: word) {        //compares each character in word with corresponding
+            if (it != the_grid[row][c++])   //character in grid
+                return false;               //false if any of the characters doesn't match
+        }
+        cout << word << " " << row << " " << col << " ACROSS" << endl;
+        return true;    //prints out word and returns true if they match
+    }
+};
+
+bool WordPuzzleSolver::foundV(const string &word, int row, int col) {
+    //Checks if there is enough space for the word from starting position
+    if (the_grid.size() - word.length() >= row) {
+        int r = row;
+        for (const char &it: word) { //compares each character in word with corresponding 
+            if (it != the_grid[r++][col]) //character in grid
+                return false;             //false if any of the characters doesn't match
+        }
+        cout << word << " " << row << " " << col << " DOWN" << endl;
+        return true;   //prints out word and returns true if they match
+    }
+};
+
+void WordPuzzleSolver::find(const string &word) {
+    for (int r = 0; r < the_grid.size(); ++r) {
+        for (int c = 0; c < the_grid[r].size(); ++c) {
+            if (foundH(word, r, c) || foundV(word, r, c))
+                return; //Once word is found, it stops iterating through the
+        }               //grid, which should make it slightly more efficient
+    }
+    cout << "ERROR: Word not Found anywhere in the Grid" << endl;
+    return;     //Above error not expected, but i put this here just in case
+};
+
+
