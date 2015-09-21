@@ -16,9 +16,21 @@ public:
     void load (ifstream& __input_file_to_read_from__);
     void solve (const string& __algorithm_to_use__);
 private:
+
+    /* Stores the character grid information from the input text file */
     vector<vector<char>> the_grid;
+    
+    /* Stores the words to be searched for in the grid */
     vector<string> the_words;
+    
+    /* 
+     * Stores the lengths of the shortest and largest words from the input
+     */ 
     pair<int, int> min_max;
+    
+    /*
+     * Stores the output of the quadruple and triple methods for printing
+     */
     vector<string> solution;
 
     /* You may add as many private variables and functions here */
